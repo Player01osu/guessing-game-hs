@@ -1,17 +1,16 @@
 import System.Random
 import Text.Read
 
-game_loop :: Int -> String -> IO ()
-game_loop answer response = do
-   putStrLn response
+game_loop :: Int -> IO ()
+game_loop answer = do
    n <- getLine
    case readMaybe n :: Maybe Int of
       Just guess -> case compare guess answer of
-            LT -> game_loop answer "Too low"
-            GT -> game_loop answer "Too high"
+            LT -> putStrLn "Too low" >> game_loop answer
+            GT -> putStrLn "Too high" >> game_loop answer
             otherwise -> putStrLn "That's it"
-      Nothing -> game_loop answer "Must be a number"
+      Nothing -> putStrLn "Must be a number" >> game_loop answer
 
 main = do
    n <- (randomIO :: IO Int)
-   game_loop (mod n 100) "Guess a number between 1-100."
+   putStrLn "Guess a number between 1-100." >> game_loop (mod n 100)
